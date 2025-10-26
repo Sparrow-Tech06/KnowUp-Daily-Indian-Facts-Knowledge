@@ -1,41 +1,67 @@
-/* Custom Colors */
 :root {
-  --primary-color: #4B7BEC;
-  --secondary-color: #FF8C42;
-  --card-bg: #FFFFFF;
-  --card-text: #333333;
-  --btn-bg: #4B7BEC;
-  --btn-text: #FFFFFF;
-  --btn-save-bg: #20C997;
-  --btn-share-bg: #FF8C42;
+  --bg: #fdf6ec;
+  --card-bg: #fff9f2;
+  --primary: #ff7b00;
+  --secondary: #008b8b;
+  --text: #333;
 }
 
-/* Navbar */
-.navbar.custom-bg { background-color: var(--primary-color); }
-.navbar .custom-text { color: #fff !important; }
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Poppins', sans-serif;
+}
 
-/* Card */
-.custom-card { background-color: var(--card-bg); color: var(--card-text); max-width: 720px; width: 100%; height: 300px; display:flex; flex-direction:column; }
-.custom-card .card-body { overflow-y: auto; }
+.text-brand {
+  color: var(--primary);
+}
 
-/* Custom Select */
-.custom-select { border-color: var(--primary-color); color: var(--card-text); }
+.fact-card {
+  background: var(--card-bg);
+  border: 2px solid var(--primary);
+  border-radius: 15px;
+  height: 300px;
+  max-width: 600px;
+}
 
-/* Buttons */
-.btn-custom { background-color: var(--secondary-color); color: #fff; }
-.btn-nav { background-color: var(--primary-color); color: #fff; min-width: 100px; }
-.btn-save { background-color: var(--btn-save-bg); color: var(--btn-text); }
-.btn-share { background-color: var(--btn-share-bg); color: var(--btn-text); }
+.btn-filter {
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+}
 
-/* Bottom Nav */
-.nav-bottom { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 999; }
+.btn-filter:hover {
+  background: var(--secondary);
+}
+
+.lang-switch {
+  width: 110px;
+}
+
+.btn-nav {
+  background: var(--primary);
+  color: #fff;
+  border-radius: 25px;
+  padding: 8px 18px;
+  font-weight: 500;
+}
+
+.btn-nav:disabled {
+  opacity: 0.6;
+}
 
 /* Toast */
-.toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display:flex; flex-direction:column; gap:10px; }
-.toast { padding: 10px 15px; border-radius: 8px; color: #fff; min-width: 200px; animation: fadein 0.5s, fadeout 0.5s 3s; }
-.toast-success { background-color: var(--btn-save-bg); }
-.toast-info { background-color: var(--primary-color); }
-.toast-error { background-color: #dc3545; }
-
-@keyframes fadein { from {opacity:0;} to {opacity:1;} }
-@keyframes fadeout { from {opacity:1;} to {opacity:0;} }
+.toast-msg {
+  background-color: var(--secondary);
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-bottom: 8px;
+  animation: fadeIn 0.4s ease;
+}
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(10px);}
+  to {opacity: 1; transform: translateY(0);}
+}
