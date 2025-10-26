@@ -1,3 +1,41 @@
-body { background: #f8fafc; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
-.card { border-radius: 12px; }
-#factText { white-space: pre-wrap; }
+/* Custom Colors */
+:root {
+  --primary-color: #4B7BEC;
+  --secondary-color: #FF8C42;
+  --card-bg: #FFFFFF;
+  --card-text: #333333;
+  --btn-bg: #4B7BEC;
+  --btn-text: #FFFFFF;
+  --btn-save-bg: #20C997;
+  --btn-share-bg: #FF8C42;
+}
+
+/* Navbar */
+.navbar.custom-bg { background-color: var(--primary-color); }
+.navbar .custom-text { color: #fff !important; }
+
+/* Card */
+.custom-card { background-color: var(--card-bg); color: var(--card-text); max-width: 720px; width: 100%; height: 300px; display:flex; flex-direction:column; }
+.custom-card .card-body { overflow-y: auto; }
+
+/* Custom Select */
+.custom-select { border-color: var(--primary-color); color: var(--card-text); }
+
+/* Buttons */
+.btn-custom { background-color: var(--secondary-color); color: #fff; }
+.btn-nav { background-color: var(--primary-color); color: #fff; min-width: 100px; }
+.btn-save { background-color: var(--btn-save-bg); color: var(--btn-text); }
+.btn-share { background-color: var(--btn-share-bg); color: var(--btn-text); }
+
+/* Bottom Nav */
+.nav-bottom { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 999; }
+
+/* Toast */
+.toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display:flex; flex-direction:column; gap:10px; }
+.toast { padding: 10px 15px; border-radius: 8px; color: #fff; min-width: 200px; animation: fadein 0.5s, fadeout 0.5s 3s; }
+.toast-success { background-color: var(--btn-save-bg); }
+.toast-info { background-color: var(--primary-color); }
+.toast-error { background-color: #dc3545; }
+
+@keyframes fadein { from {opacity:0;} to {opacity:1;} }
+@keyframes fadeout { from {opacity:1;} to {opacity:0;} }
