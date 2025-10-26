@@ -1,79 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Facts — Explore & Share</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Facts WebApp</title>
 
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-
-  <!-- SweetAlert2 -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-  <link rel="stylesheet" href="css/styles.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="#">Facts</a>
-      <div>
-        <a class="btn btn-outline-primary btn-sm me-2" href="saved-facts.html">
-          <i class="bi bi-bookmark-fill"></i> Saved
-        </a>
+
+<nav class="navbar custom-bg py-3 shadow-sm">
+  <div class="container d-flex justify-content-between align-items-center">
+    <a class="navbar-brand custom-text fw-bold" href="#">Facts</a>
+    <a class="btn btn-outline-custom custom-text" href="saved-facts.html">
+      <i class="bi bi-bookmark-fill"></i> Saved
+    </a>
+  </div>
+</nav>
+
+<main class="container my-4">
+  <h2 class="text-center mb-3 custom-text">Discover Facts</h2>
+
+  <!-- Category Filter -->
+  <div class="row justify-content-center mb-3">
+    <div class="col-md-8">
+      <div class="input-group">
+        <label class="input-group-text custom-bg custom-text" for="categorySelect">Category</label>
+        <select id="categorySelect" class="form-select custom-select">
+          <option value="all" selected>All (mixed)</option>
+          <option value="nature">Nature & Places</option>
+          <option value="science">Science & Innovation</option>
+          <option value="society">Society</option>
+          <option value="history">History</option>
+        </select>
+        <button id="reloadBtn" class="btn btn-custom" title="Reload">
+          <i class="bi bi-arrow-clockwise"></i>
+        </button>
       </div>
     </div>
-  </nav>
+  </div>
 
-  <main class="container my-4">
-    <h2 class="mb-3 text-center">Discover quick facts</h2>
+  <!-- Fact Card -->
+  <div id="cardWrap" class="d-flex justify-content-center">
+    <div id="factCard" class="card shadow-sm custom-card" style="display:none;">
+      <div class="card-body overflow-scroll">
+        <p id="factText" class="fs-5 custom-text"></p>
+        <small id="factMeta" class="text-muted"></small>
+      </div>
 
-    <div class="row justify-content-center mb-4">
-      <div class="col-md-8">
-        <div class="input-group">
-          <label class="input-group-text" for="categorySelect">Category</label>
-          <select id="categorySelect" class="form-select" aria-label="Select category">
-            <option value="all" selected>All (mixed)</option>
-            <option value="nature">Nature & Places</option>
-            <option value="science">Science & Innovation</option>
-            <option value="society">Society</option>
-            <option value="history">History</option>
-          </select>
-          <button id="reloadBtn" class="btn btn-outline-secondary" title="Reload facts">
-            <i class="bi bi-arrow-clockwise"></i>
-          </button>
-        </div>
+      <div class="card-footer d-flex justify-content-between flex-wrap gap-2">
+        <button id="saveBtn" class="btn btn-save"><i class="bi bi-bookmark"></i> Save</button>
+        <button id="shareBtn" class="btn btn-share"><i class="bi bi-share"></i> Share</button>
       </div>
     </div>
+  </div>
 
-    <div id="cardWrap" class="d-flex justify-content-center">
-      <div id="factCard" class="card shadow-sm" style="max-width:720px; width:100%; display:none;">
-        <div class="card-body">
-          <p id="factText" class="card-text fs-5"></p>
-          <small id="factMeta" class="text-muted"></small>
-        </div>
+  <div id="emptyState" class="text-center text-muted mt-4" style="display:none;">
+    No facts available.
+  </div>
+</main>
 
-        <div class="card-footer d-flex align-items-center justify-content-between gap-2 flex-wrap">
-          <div class="d-flex gap-2">
-            <button id="saveBtn" class="btn btn-outline-success btn-sm"><i class="bi bi-bookmark"></i> Save</button>
-            <button id="shareBtn" class="btn btn-outline-primary btn-sm"><i class="bi bi-share"></i> Share</button>
-          </div>
+<!-- Navigation Buttons fixed at bottom -->
+<div class="nav-bottom d-flex justify-content-center gap-3">
+  <button id="prevBtn" class="btn btn-nav">Previous</button>
+  <button id="nextBtn" class="btn btn-nav">Next</button>
+</div>
 
-          <div class="ms-auto d-flex gap-2">
-            <button id="prevBtn" class="btn btn-secondary btn-sm">Previous</button>
-            <button id="nextBtn" class="btn btn-secondary btn-sm">Next</button>
-          </div>
-        </div>
-      </div>
-    </div>
+<!-- Toast container -->
+<div id="toastContainer" class="toast-container"></div>
 
-    <div id="emptyState" class="text-center text-muted mt-4" style="display:none;">
-      No facts available. Try another category or reload.
-    </div>
-  </main>
-
-  <script src="js/data-service.js"></script>
-  <script src="js/app.js"></script>
+<script src="js/data-service.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
