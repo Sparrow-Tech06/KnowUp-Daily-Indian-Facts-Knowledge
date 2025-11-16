@@ -40,7 +40,7 @@
         /* Header */
         .header-section {
             background: #FF6B6B;
-            padding: 15px;
+            padding: 0px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -81,7 +81,10 @@
     outline: none !important;
     box-shadow: none !important;
 }
+        .offcanvas { max-width:80%; }
+        .offcanvas-header { background: #FF6B6B ; color:#fff ; }
 
+        
         /* Category Cards */
         .category-card {
             border-radius: var(--card-radius);
@@ -115,8 +118,9 @@
             justify-content: center;
             padding: 0px 0px;
             text-align: center;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 620;
+            color: #FF6B6B ;
         }
 
         /* Skeleton Loader */
@@ -145,7 +149,7 @@
         <div class="container-fluid d-flex justify-content-between align-items-center">
 
         <!-- Left: Toggle + Brand -->
-        <div class="d-flex align-items-center gap-2">
+        <div class="d-flex align-items-center gap-1">
 
            <!-- Clean Toggle Button -->
             <button class="btn btn-clean" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
@@ -153,6 +157,7 @@
             </button>
             <h1 id="appTitle" class="m-0 fw-bold fs-5"> Bharat Buzz </h1>
         </div>
+            
         <!-- Right: Select -->
         <div class="d-flex align-items-center gap-2">
             <select id="languageSelect">
