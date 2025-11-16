@@ -40,7 +40,6 @@
         /* Header */
         .header-section {
             background: #FF6B6B;
-          /*  border-bottom: 1px solid #eee; */
             padding: 15px;
             display: flex;
             justify-content: space-between;
@@ -48,6 +47,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            color: #fff;
         }
 
         #languageSelect {
@@ -74,6 +74,7 @@
         .card-img-wrap {
             height: 70%;
             padding: 8px;
+            position: relative;
         }
 
         .card-img-wrap img {
@@ -90,8 +91,23 @@
             justify-content: center;
             padding: 4px;
             text-align: center;
-            font-size: 0.80rem;
+            font-size: 0.82rem;
             font-weight: 650;
+        }
+
+        /* Skeleton Loader */
+        .skeleton {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #e0e0e0 0px, #f3f3f3 40px, #e0e0e0 80px);
+            background-size: 600px;
+            animation: shimmer 1.2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200px 0; }
+            100% { background-position: 200px 0; }
         }
     </style>
     
@@ -105,7 +121,6 @@
         <h1 id="appTitle" class="m-0">Bharat Buzz</h1>
 
         <div class="d-flex align-items-center gap-2">
-            
             <select id="languageSelect">
                 <option value="en"> English </option>
                 <option value="bn"> Bengali </option>
@@ -125,50 +140,62 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-/* ---------- CONTENT DATA ---------- */
+/* ---- GLOBAL IMAGES (USED FOR ALL LANGUAGES) ---- */
+const categoryImages = [
+    "https://picsum.photos/id/1018/500/500",
+    "https://picsum.photos/id/1024/500/500",
+    "https://picsum.photos/id/1074/500/500",
+    "https://picsum.photos/id/1060/500/500",
+    "https://picsum.photos/id/1084/500/500",
+    "https://picsum.photos/id/1076/500/500",
+    "https://picsum.photos/id/1005/500/500",
+    "https://picsum.photos/id/1062/500/500"
+];
+
+/* ---- CONTENT DATA (NO MORE IMAGES INSIDE) ---- */
 const contentData = {
     bn: {
         appTitle: "Bharat Buzz",
         categories: [
-            { title: "ইতিহাস ও ঐতিহ্য", img: "https://picsum.photos/id/1018/500/500", href: "history.html" },
-            { title: "আঞ্চলিক ভূগোল", img: "https://picsum.photos/id/1024/500/500", href: "geography.html" },
-            { title: "বিজ্ঞান ও উদ্ভাবন", img: "https://picsum.photos/id/1074/500/500", href: "science.html" },
-            { title: "সংস্কৃতি ও শিল্পকলা", img: "https://picsum.photos/id/1060/500/500", href: "culture.html" },
-            { title: "খাবার ও রন্ধনপ্রণালী", img: "https://picsum.photos/id/1084/500/500", href: "cuisine.html" },
-            { title: "খেলাধুলা ও অর্জন", img: "https://picsum.photos/id/1076/500/500", href: "sports.html" },
-            { title: "দৈনন্দিন জীবন", img: "https://picsum.photos/id/1005/500/500", href: "life.html" },
-            { title: "মিথ বনাম রিয়ালিটি", img: "https://picsum.photos/id/1062/500/500", href: "myth.html" }
+            { title: "ইতিহাস ও ঐতিহ্য", href: "history.html" },
+            { title: "আঞ্চলিক ভূগোল", href: "geography.html" },
+            { title: "বিজ্ঞান ও উদ্ভাবন", href: "science.html" },
+            { title: "সংস্কৃতি ও শিল্পকলা", href: "culture.html" },
+            { title: "খাবার ও রন্ধনপ্রণালী", href: "cuisine.html" },
+            { title: "খেলাধুলা ও অর্জন", href: "sports.html" },
+            { title: "টাইমলাইন গেম", href: "life.html" },
+            { title: "মিথ বনাম বাস্তব", href: "myth.html" }
         ]
     },
     hi: {
         appTitle: "Bharat Buzz",
         categories: [
-            { title: "इतिहास और विरासत", img: "https://picsum.photos/id/1018/500/500", href: "history.html" },
-            { title: "क्षेत्रीय भूगोल", img: "https://picsum.photos/id/1024/500/500", href: "geography.html" },
-            { title: "विज्ञान और नवाचार", img: "https://picsum.photos/id/1074/500/500", href: "science.html" },
-            { title: "संस्कृति और कला", img: "https://picsum.photos/id/1060/500/500", href: "culture.html" },
-            { title: "भोजन और व्यंजन", img: "https://picsum.photos/id/1084/500/500", href: "cuisine.html" },
-            { title: "खेल और उपलब्धियाँ", img: "https://picsum.photos/id/1076/500/500", href: "sports.html" },
-            { title: "रोजमर्रा की ज़िंदगी", img: "https://picsum.photos/id/1005/500/500", href: "life.html" },
-            { title: "मिथक बनाम वास्तविकता", img: "https://picsum.photos/id/1062/500/500", href: "myth.html" }
+            { title: "इतिहास और विरासत", href: "history.html" },
+            { title: "क्षेत्रीय भूगोल", href: "geography.html" },
+            { title: "विज्ञान और नवाचार", href: "science.html" },
+            { title: "संस्कृति और कला", href: "culture.html" },
+            { title: "भोजन और व्यंजन", href: "cuisine.html" },
+            { title: "खेल और उपलब्धियाँ", href: "sports.html" },
+            { title: "टाइमलाइन गेम", href: "life.html" },
+            { title: "मिथक बनाम वास्तविकता", href: "myth.html" }
         ]
     },
     en: {
         appTitle: "Bharat Buzz",
         categories: [
-            { title: "History & Heritage", img: "https://picsum.photos/id/1018/500/500", href: "history.html" },
-            { title: "Regional Geography", img: "https://picsum.photos/id/1024/500/500", href: "geography.html" },
-            { title: "Science & Innovation", img: "https://picsum.photos/id/1074/500/500", href: "science.html" },
-            { title: "Culture & Arts", img: "https://picsum.photos/id/1060/500/500", href: "culture.html" },
-            { title: "Food & Cuisine", img: "https://picsum.photos/id/1084/500/500", href: "cuisine.html" },
-            { title: "Sports & Achievements", img: "https://picsum.photos/id/1076/500/500", href: "sports.html" },
-            { title: "TimeLine Game", img: "https://picsum.photos/id/1005/500/500", href: "life.html" },
-            { title: "Myth vs Reality", img: "https://picsum.photos/id/1062/500/500", href: "myth.html" }
+            { title: "History & Heritage", href: "history.html" },
+            { title: "Regional Geography", href: "geography.html" },
+            { title: "Science & Innovation", href: "science.html" },
+            { title: "Culture & Arts", href: "culture.html" },
+            { title: "Food & Cuisine", href: "cuisine.html" },
+            { title: "Sports & Achievements", href: "sports.html" },
+            { title: "TimeLine Game", href: "life.html" },
+            { title: "Myth vs Reality", href: "myth.html" }
         ]
     }
 };
 
-/* ---------- LANGUAGE LOGIC ---------- */
+/* ---- LANGUAGE LOGIC ---- */
 let currentLang = localStorage.getItem("appLang") || "en";
 
 function updateUI(lang) {
@@ -180,20 +207,37 @@ function updateUI(lang) {
     const grid = document.getElementById("categoryGrid");
     grid.innerHTML = "";
 
-    data.categories.forEach(cat => {
+    data.categories.forEach((cat, index) => {
+        let id = `img_${index}`;
+
         grid.innerHTML += `
             <div class="col">
                 <a href="${cat.href}" class="category-card">
                     <div class="card-img-wrap">
-                        <img src="${cat.img}"
-                             loading="lazy"
-                             draggable="false"
-                             alt="${cat.title}">
+                        <div class="skeleton" id="sk_${id}"></div>
+
+                        <img 
+                            id="${id}"
+                            src="${categoryImages[index]}"
+                            loading="lazy"
+                            draggable="false"
+                            alt="${cat.title}"
+                            style="display:none;"
+                        >
                     </div>
                     <div class="card-title">${cat.title}</div>
                 </a>
             </div>
         `;
+
+        // Wait for image to load → then hide skeleton
+        const tempImg = new Image();
+        tempImg.src = categoryImages[index];
+
+        tempImg.onload = () => {
+            document.getElementById(id).style.display = "block";
+            document.getElementById("sk_" + id).style.display = "none";
+        };
     });
 }
 
@@ -210,3 +254,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
