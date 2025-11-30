@@ -26,7 +26,8 @@
             --bs-text-primary: #333;
             --bs-text-secondary: #666;
             --max-width: 380px;
-        }
+        }        
+  @media (prefers-color-scheme: dark) {
         :root {
             --bs-primary-color: #65a4ff; /* Main app blue (User's preferred color) */
             --bs-primary-light-bg: #f0f7ff; /* Very light background for icon wrapper */
@@ -37,8 +38,8 @@
 
             --bs-text-primary: #333;
             --bs-text-secondary: #666;
-            --max-width: 90% ;
         }
+  }
         body {
             background-color: var(--bs-body-bg); /* Full page white */
             font-family: 'Inter', system-ui, sans-serif;
