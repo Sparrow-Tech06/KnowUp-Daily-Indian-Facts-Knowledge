@@ -2,8 +2,8 @@ const webVersion = "13"; // Website-required version
 let isPopupShown = false; // 🔹 Track popup state
 
 function checkVersion() {
-   //  const appVersion = Android.getAppVersion(); // Android to WebView version fetch
-    const appVersion = "5.0"; // 🔹 Demo/Test purpose manual app version comment it for real 
+    const appVersion = Android.getAppVersion(); // Android to WebView version fetch
+   //  const appVersion = "5.0"; // 🔹 Demo/Test purpose manual app version comment it for real 
     if (appVersion !== webVersion && !isPopupShown) {
         showUpdatePopup();
     }
