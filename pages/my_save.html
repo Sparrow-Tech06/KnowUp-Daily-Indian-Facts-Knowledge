@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Saved Facts | Bharat Buzz</title>
+    
+    <!-- React CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #65a4d8;
+            --background-light: #F0F2F5;
+            --danger-color: #dc3545;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: var(--background-light);
+            font-family: 'Inter', system-ui, sans-serif;
+            color: #3A3A3A;
+        }
+        .app-container {
+            max-width: 660px;
+            margin: 0 auto;
+            background-color: white;
+            min-height: 100vh;
+        }
+        .page-header {
+            background-color: #65a4d8;
+            border-bottom: 1px solid #eee;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+        }
+        header > nav > .bi {
+            background: #fff;
+            color: #6C63FF;
+            font-size: 1rem;
+            padding: 4px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .header-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            margin: 0;
+        }
+        .saved-facts-container {
+            padding: 15px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #dee2e6;
+        }
+        .saved-fact-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            background-color: white;
+            transition: transform 0.2s ease;
+        }
+        .saved-fact-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .saved-fact-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .saved-fact-content {
+            padding: 15px;
+        }
+        .saved-fact-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        .saved-fact-body {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #555;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .saved-fact-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        .saved-date {
+            font-size: 0.8rem;
+            color: #888;
+        }
+        .delete-btn {
+            background-color: transparent;
+            border: none;
+            color: var(--danger-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+        .delete-btn:hover {
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+        .language-badge {
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-right: 5px;
+        }
+        .delete-all-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+            transition: transform 0.2s ease;
+            z-index: 1000;
+        }
+        .delete-all-btn:hover {
+            transform: scale(1.1);
+        }
+        .confirmation-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 90%;
+            width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <main class="app-container">
+        <header class="page-header">
+            <nav class="container-fluid d-flex justify-content-between align-items-center p-0">
+                <i class="bi bi-arrow-left" onclick="window.history.back()"></i>
+                <h1 class="header-title">My Saved Facts</h1>
+                <div style="width: 40px;"></div> <!-- Spacer for alignment -->
+            </nav>
+        </header>
+
+        <section class="saved-facts-container" id="savedFactsContainer">
+            <!-- Saved facts will be dynamically inserted here -->
+            <div class="empty-state" id="emptyState">
+                <i class="bi bi-bookmark"></i>
+                <h3>No Saved Facts</h3>
+                <p>Save interesting facts from History & Heritage to see them here.</p>
+                <button class="btn btn-primary mt-3" onclick="window.location.href='history.html'">
+                    Browse Facts
+                </button>
+            </div>
+        </section>
+
+        <button class="delete-all-btn" id="deleteAllBtn" style="display: none;">
+            <i class="bi bi-trash"></i>
+        </button>
+    </main>
+
+    <script type="text/babel">
+        // React Components for Saved Facts
+        const { useState, useEffect } = React;
+
+        // Saved Fact Card Component
+        function SavedFactCard({ fact, onDelete, currentLang }) {
+            const formatDate = (dateString) => {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+            };
+
+            return (
+                <div className="saved-fact-card">
+                    <img 
+                        src={fact.image} 
+                        alt={fact[currentLang]?.title || 'Fact Image'}
+                        className="saved-fact-image"
+                        onError={(e) => {
+                            e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxNTBweCIgdmlld0JveD0iMCAwIDEwMCAxNTAiIGZpbGw9IiNlMGUwZTAiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2UgTm90IEF2YWlsYWJsZTwvdGV4dD48L3N2Zz4=';
+                        }}
+                    />
+                    <div className="saved-fact-content">
+                        <h3 className="saved-fact-title">
+                            {fact[currentLang]?.title || 'No Title'}
+                        </h3>
+                        <p className="saved-fact-body">
+                            {fact[currentLang]?.fact || 'No content available'}
+                        </p>
+                        <div className="saved-fact-footer">
+                            <span className="saved-date">
+                                Saved on {formatDate(fact.savedAt)}
+                            </span>
+                            <button 
+                                className="delete-btn"
+                                onClick={() => onDelete(fact.id)}
+                                title="Delete this fact"
+                            >
+                                <i className="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Main App Component for Saved Facts Page
+        function SavedFactsApp() {
+            const [savedFacts, setSavedFacts] = useState([]);
+            const [currentLang, setCurrentLang] = useState(
+                localStorage.getItem('appLang') || 'en'
+            );
+            const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+            // Load saved facts from localStorage
+            useEffect(() => {
+                const saved = JSON.parse(localStorage.getItem('savedFacts')) || [];
+                setSavedFacts(saved);
+            }, []);
+
+            // Delete a single fact
+            const handleDeleteFact = (factId) => {
+                const updatedFacts = savedFacts.filter(fact => fact.id !== factId);
+                setSavedFacts(updatedFacts);
+                localStorage.setItem('savedFacts', JSON.stringify(updatedFacts));
+            };
+
+            // Delete all facts
+            const handleDeleteAll = () => {
+                setSavedFacts([]);
+                localStorage.removeItem('savedFacts');
+                setShowDeleteConfirm(false);
+            };
+
+            // Show confirmation modal for delete all
+            const confirmDeleteAll = () => {
+                if (savedFacts.length > 0) {
+                    setShowDeleteConfirm(true);
+                }
+            };
+
+            // Render empty state or saved facts
+            const renderContent = () => {
+                if (savedFacts.length === 0) {
+                    return (
+                        <div className="empty-state" id="emptyState">
+                            <i className="bi bi-bookmark"></i>
+                            <h3>No Saved Facts</h3>
+                            <p>Save interesting facts from History & Heritage to see them here.</p>
+                            <button 
+                                className="btn btn-primary mt-3"
+                                onClick={() => window.location.href = 'history.html'}
+                            >
+                                Browse Facts
+                            </button>
+                        </div>
+                    );
+                }
+
+                return (
+                    <>
+                        {savedFacts.map(fact => (
+                            <SavedFactCard
+                                key={fact.id}
+                                fact={fact}
+                                onDelete={handleDeleteFact}
+                                currentLang={currentLang}
+                            />
+                        ))}
+                    </>
+                );
+            };
+
+            return (
+                <>
+                    <section className="saved-facts-container" id="savedFactsContainer">
+                        {renderContent()}
+                    </section>
+
+                    {savedFacts.length > 0 && (
+                        <button 
+                            className="delete-all-btn" 
+                            id="deleteAllBtn"
+                            onClick={confirmDeleteAll}
+                            title="Delete all saved facts"
+                        >
+                            <i className="bi bi-trash"></i>
+                        </button>
+                    )}
+
+                    {showDeleteConfirm && (
+                        <div className="confirmation-modal">
+                            <div className="modal-content">
+                                <h4>Delete All Saved Facts?</h4>
+                                <p className="mt-2 mb-4">
+                                    Are you sure you want to delete all {savedFacts.length} saved facts? 
+                                    This action cannot be undone.
+                                </p>
+                                <div className="d-flex justify-content-end gap-2">
+                                    <button 
+                                        className="btn btn-secondary"
+                                        onClick={() => setShowDeleteConfirm(false)}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button 
+                                        className="btn btn-danger"
+                                        onClick={handleDeleteAll}
+                                    >
+                                        Delete All
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </>
+            );
+        }
+
+        // Initialize React App
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('savedFactsContainer');
+            const root = ReactDOM.createRoot(container);
+            root.render(<SavedFactsApp />);
+        });
+    </script>
+</body>
+              </html>
